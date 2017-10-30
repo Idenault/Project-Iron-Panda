@@ -1,0 +1,11 @@
+{
+  "name": "\"Project_Iron_Panda",
+  "description": "Iron Panda Game",
+  "version": "0.0.1",
+  "keywords": ["Pokemon, Pong, Chess, RPCLS "],
+
+  "dependencies": {
+    "websockets": "^0.2.0"
+
+  }
+}
