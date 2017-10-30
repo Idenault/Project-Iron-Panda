@@ -16,28 +16,22 @@
                 background: #222222;
                 border: thin inset #999999
             }
-            .textInput{
-                margin: 0 0 0 250px;
-            }
+
         </style>
     </head>
 
     <body>
-    <canvas id="canvas" class="canvas" width="1000" height="600">
+    <canvas id="canvas1" class="canvas" width="1000" height="600">
 
     </canvas>
 
     <script src="canvas.js">
 
-        var canvas = document.getElementById("canvas");
+        var canvas = document.getElementById("canvas1");
         var context = canvas.getContext('2d');
 
     </script>
 
-    <input type = "text" id="userTextField" class="textInput" name="userTextField" value="" size="133"
-           placeholder="Request permission to play." style="background: #888888; color: black" >
-
-    <input type="button" value="Submit Request" onclick="handleSubmitRequestButton()">
 
     </body>
 </html>
