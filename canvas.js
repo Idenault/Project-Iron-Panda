@@ -1,10 +1,27 @@
 
+var tokens = [];
+tokens.push({colour: "red", x:600, y:400, width: 100, height: 100});
+tokens.push({colour: "blue", x:500, y:300, width: 100, height: 100});
 
+var canvas = document.getElementById("canvas1");
 
+var deltaX;
+var deltaY;
+var tokenBeingMoved;
 
+function getTokenAtLocation(x, y){
+    console.log("grab token");
 
-var paddleBeingMoved;
-var ENTER_KEY = 13;
+    for (var i=0; i < tokens.length;i++){
+        var token = tokens[i];
+        if((token.x < x) && (token.x + token.width > x) &&
+            (token.y < y) && (token.y + token.height > y)){
+            console.log("token grabbed");
+            return token;
+        }
+    }
+    return null;
+}
 
 var drawCanvas = function(){
 
@@ -18,17 +35,15 @@ var drawCanvas = function(){
     context.strokeStyle = '#999999';
 
     // --------------------------------------------------------
-    //this will be where paddles, names, and scores are drawn
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //----------------------------------------------------------
+    //this will be where paddles, buttons, and scores are drawn
+
+    for (var i=0; i < tokens.length; i++){
+        var token = tokens[i];
+        context.strokeStyle = token.colour;
+        context.fillStyle = token.colour;
+        context.fillRect(token.x, token.y, token.width, token.height);
+        context.strokeRect(token.x, token.y, token.width, token.height);
+    }
 };
 
 //event handler for when left mouse button is clicked (hopefully on a paddle)
@@ -37,14 +52,15 @@ function handleMouseDown(event){
     var canvasX = event.pageX - rect.left;
     var canvasY = event.pageY - rect.top;
 
-    paddleBeingMoved = getPaddleAtLocation(canvasX, canvasY);
+    tokenBeingMoved = getTokenAtLocation(canvasX, canvasY);
 
-    if(paddleBeingMoved !== null){
-        deltaY = paddleBeingMoved.y - canvasY;
+    if(tokenBeingMoved !== null){
+        deltaX = tokenBeingMoved.x - canvasX;
+        deltaY = tokenBeingMoved.y - canvasY;
     }
 
-    $("#canvas").mousemove(handleMouseMove);
-    $("#canvas").mouseup(handleMouseUp);
+    $("#canvas1").mousemove(handleMouseMove);
+    $("#canvas1").mouseup(handleMouseUp);
 
     event.stopPropagation();
     event.preventDefault();
@@ -58,7 +74,15 @@ function handleMouseMove(event){
     var canvasX = event.pageX - rect.left;
     var canvasY = event.pageY - rect.top;
 
-    paddleBeingMoved.y = canvasY + deltaY;
+    tokenBeingMoved.y = canvasY + deltaY;
+    tokenBeingMoved.x = canvasX + deltaX;
+
+    if(tokenBeingMoved.y + tokenBeingMoved.height > rect.bottom){
+        tokenBeingMoved.y = rect.bottom - tokenBeingMoved.height;
+    }
+    else if(tokenBeingMoved.y < rect.top){
+        tokenBeingMoved.y = rect.top
+    }
 
     event.stopPropagation();
 
@@ -70,47 +94,15 @@ function handleMouseUp(event){
 
     event.stopPropagation();
 
-    $("#canvas").off("mousemove", handleMouseMove);
-    $("#canvas").off("mouseup", handleMouseUp);
+    $("#canvas1").off("mousemove", handleMouseMove);
+    $("#canvas1").off("mouseup", handleMouseUp);
 
     drawCanvas();
 }
 
-function handleKeyUp(event){
-    if(event.which === ENTER_KEY){
-        handleSubmitButton();
-        //$("#userTextField").val("");   maybe clear text field. maybe not **
-    }
-
-    event.stopPropagation();
-    event.preventDefault();
-}
-
-function handleSubmitButton(){
-    var requestText = $("#userTextField").val();
-
-    if(requestText && requestText !== ""){
-
-        var userRequestObj = {text: requestText};
-        var userRequestJSON = JSON.stringify(userRequestObj);
-
-        //send a post with some stuff
-        $.post("userText", userRequestJSON, function(data, status){
-
-            //process the response
-
-            var responseObj = JSON.parse(data);
-
-
-
-            drawCanvas();
-
-        });
-    }
-}
 
 $(document).ready(function(){
-   $("#canvas").mousedown(handleMouseDown);
-   $(document).keyup(handleKeyUp);
-   drawCanvas()
+   $("#canvas1").mousedown(handleMouseDown);
+   drawCanvas();
+   console.log("Thing on");
 });
