@@ -4,7 +4,8 @@
 var http = require('http');
 var url = require ('url');
 var fs = require ('fs');
-
+var staticServer = require('ecstatic');
+var socket = require('ws').Server;
 var ROOT_DIR = 'html';
 
 //create MIME types and get method
@@ -28,16 +29,15 @@ var get_mime = function(filename){
 
 
 //launch server
-http.createServer(function(request, response){
-    var urlObj = url.parse(request.url, true, false);
-
+var server = http.createServer(staticServer({root:ROOT_DIR}));
+var wss = new socket({server: server});
+wss.on('connection', function(ws) {    var urlObj = url.parse(request.url, true, false);
     var receivedData = '';
-
-    request.on('data', function(chunk){
-       receivedData += chunk;
+    ws.on('data', function(chunk){
+        receivedData += chunk;
     });
 
-    request.on('end', function(){
+    ws.on('end', function(){
 
         if(request.method === "POST"){
             var dataObj = JSON.stringify(receivedData);
@@ -49,7 +49,6 @@ http.createServer(function(request, response){
             //
             //--------------------------------------------
         }
-
         if(request.method === "GET"){
             var filePath = ROOT_DIR + urlObj.pathname;
 
@@ -68,6 +67,7 @@ http.createServer(function(request, response){
             });
         }
     });
-}).listen(3000);
+});
+server.listen(3000);
 
 console.log("Server Running at http://127.0.0.1:3000/assignment2.html Ctrl-C to stop server.");
