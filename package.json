@@ -5,7 +5,7 @@
   "keywords": ["Pokemon, Pong, Chess, RPCLS "],
 
   "dependencies": {
-    "ws": "~0.4.32",
-    "ecstatic": "~0.5.4"
+    "ecstatic": "~0.5.4",
+    "socket.io": "^2.0.4"
   }
 }

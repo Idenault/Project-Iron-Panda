@@ -4,9 +4,12 @@
 var http = require('http');
 var url = require ('url');
 var fs = require ('fs');
-var staticServer = require('ecstatic');
-var socket = require('ws').Server;
 var ROOT_DIR = 'html';
+var staticServer = require('ecstatic');
+var socket = require('socket.io');
+var players = {player1: 0, player2: 0};
+
+
 
 //create MIME types and get method
 var MIME_TYPES = {
@@ -30,44 +33,28 @@ var get_mime = function(filename){
 
 //launch server
 var server = http.createServer(staticServer({root:ROOT_DIR}));
-var wss = new socket({server: server});
-wss.on('connection', function(ws) {    var urlObj = url.parse(request.url, true, false);
-    var receivedData = '';
-    ws.on('data', function(chunk){
-        receivedData += chunk;
-    });
-
-    ws.on('end', function(){
-
-        if(request.method === "POST"){
-            var dataObj = JSON.stringify(receivedData);
-
-            // -------------------------------------------
-            // process the user requests for permissions here
-            //
-            //
-            //
-            //--------------------------------------------
-        }
-        if(request.method === "GET"){
-            var filePath = ROOT_DIR + urlObj.pathname;
-
-            fs.readFile(filePath, function(err, data){
-                if (err) {
-
-                    console.log("ERROR: File not found." + JSON.stringify(err));
-
-                    response.writeHead(404);
-                    response.end(JSON.stringify(err));
-                    return;
-                }
-
-                response.writeHead(200, {'Content-Type': get_mime(filePath)});
-                response.end(data);
-            });
-        }
-    });
-});
 server.listen(3000);
+
+// launch Socket
+var socketIO = socket(server);
+socketIO.on('connection', function(socket)
+{
+    if(players.player1===0)
+    {
+
+        players.player1= socket.id;
+        console.log("Player 1: " + players.player1)
+    }
+    else if(players.player2===0)
+    {
+        players.player2= socket.id;
+        console.log("Player 2: " + players.player2)
+    }
+    socket.on('move',function(data){
+        socketIO.sockets.emit('move',data);
+    })
+
+
+});
 
 console.log("Server Running at http://127.0.0.1:3000/assignment2.html Ctrl-C to stop server.");

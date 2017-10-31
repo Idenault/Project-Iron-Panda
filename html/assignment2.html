@@ -4,23 +4,46 @@
         <meta charset="UTF-8">
         <title>Assignment 2</title>
         <script src="jquery-1.11.3.js"></script>
-
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
         <style>
             body {
                 background: #333333;
             }
             canvas {
-                margin: 50px 250px 20px 250px;
+                margin: 50px 250px 50px 250px;
             }
             .canvas {
                 background: #222222;
                 border: thin inset #999999
             }
+            .vl {
+                border-left: 6px solid black;
+                height: 500px;
+                position: absolute;
+                left: 750px;
+                margin-left: -3px;
+                top: 175px;
+            }
+            button
+            {
+                background-color:crimson;
+                width: 100px;
+                height: 30px;
+                position: absolute;
+                left: 700px;
+                top: 750px;
+            }
+
 
         </style>
     </head>
 
     <body>
+    <h1 align="center">Iron Panda Battle Arena</h1>
+    <div class="vl"></div>
+    <button type="button" onclick="action('Team Blue Wins')">Battle!!!</button>
+    </body>
+
     <canvas id="canvas1" class="canvas" width="1000" height="600">
 
     </canvas>
@@ -30,8 +53,5 @@
         var canvas = document.getElementById("canvas1");
         var context = canvas.getContext('2d');
 
-    </script>
-
-
-    </body>
+  </script>
 </html>
