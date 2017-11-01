@@ -37,11 +37,12 @@ server.listen(3000);
 
 // launch Socket
 var socketIO = socket(server);
+
+
 socketIO.on('connection', function(socket)
 {
     if(players.player1===0)
     {
-
         players.player1= socket.id;
         console.log("Player 1: " + players.player1)
     }
@@ -52,8 +53,20 @@ socketIO.on('connection', function(socket)
     }
     socket.on('move',function(data){
         socketIO.sockets.emit('move',data);
-    })
+    });
+    socket.on('fuck',function (data) {
+        if(data.red.att === 0);
+        if(data.blue.att === 0);
+        if(data.blue.hp === 0);
+        if(data.red.hp === 0);
+        //operations.battle(data.red, data.blue)
 
+        if(winer)
+        {
+            socketIO.emit('winer' data)
+        }
+        else {socketIO.emit(data.red, data.blue)}
+    });
 
 });
 

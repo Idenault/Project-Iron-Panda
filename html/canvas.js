@@ -4,9 +4,15 @@ var tokens = [];
 tokens.push({colour: "red", x:50, y:250, width: 100, height: 100, player: 0, ready : false, att: 0, hp: 0});
 tokens.push({colour: "blue", x:850, y:250, width: 100, height: 100, player: 0, ready: false, att: 0, hp: 0});
 var canvas = document.getElementById("canvas1");
+document.getElementById("btn").addEventListener("click", handleClick);
+
+
+
 var deltaX;
 var deltaY;
 var tokenBeingMoved;
+
+
 
 function getTokenAtLocation(x, y){
     console.log("grab token");
@@ -113,6 +119,11 @@ $(document).ready(function(){
    drawCanvas();
    console.log("Thing on");
 });
+
+function handleClick()
+{
+    socket.emit('fight', {blue: tokens[0], red: tokens[1]})
+}
 
 
 // listen for events
