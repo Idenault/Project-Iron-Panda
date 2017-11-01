@@ -4,11 +4,11 @@
 var http = require('http');
 var url = require ('url');
 var fs = require ('fs');
+var operations = require("./operations");
 var ROOT_DIR = 'html';
 var staticServer = require('ecstatic');
 var socket = require('socket.io');
 var players = {player1: 0, player2: 0};
-
 
 
 //create MIME types and get method
@@ -54,19 +54,22 @@ socketIO.on('connection', function(socket)
     socket.on('move',function(data){
         socketIO.sockets.emit('move',data);
     });
-    socket.on('fuck',function (data) {
-        if(data.red.att === 0);
-        if(data.blue.att === 0);
-        if(data.blue.hp === 0);
-        if(data.red.hp === 0);
-        //operations.battle(data.red, data.blue)
+    socket.on('fight',function (data) {
+        if(data.red.att === 0){data.red.att = operations.attack();}
+        if(data.blue.att === 0)data.blue.att = operations.attack();
+        if(data.blue.hp === 0)data.blue.hp = operations.hp();
+        if(data.red.hp === 0)data.red.hp = operations.hp();
+        var winner = operations.battle(data.red, data.blue);
 
-        if(winer)
+        if(winner==="continue")
         {
-            socketIO.emit('winer' data)
+            data.red.hp -= data.blue.att;
+            data.blue.hp -= data.red.att;
+            socketIO.emit('continue',{win: winner, red: data.red, blue:data.blue})
         }
-        else {socketIO.emit(data.red, data.blue)}
+        else {socketIO.emit('winner', {win:winner})}
     });
+
 
 });
 
