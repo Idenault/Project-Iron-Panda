@@ -8,28 +8,8 @@ var operations = require("./operations");
 var ROOT_DIR = 'html';
 var staticServer = require('ecstatic');
 var socket = require('socket.io');
-var players = {player1: 0, player2: 0};
-
-
-//create MIME types and get method
-var MIME_TYPES = {
-    'html': 'text/html',
-    'js': 'text/javascript',
-    'json': 'application/json',
-    'txt': 'text/plain'
-};
-
-var get_mime = function(filename){
-    var ext, type;
-    for (ext in MIME_TYPES){
-        type = MIME_TYPES[ext];
-        if(filename.indexOf(ext, filename.length - ext.length) !== -1){
-            return type;
-        }
-    }
-    return MIME_TYPES['txt'];
-};
-
+player1 = ({teamName: "", name: "", teamColor: "", num: 1});
+player2 = ({teamName: "", name: "", teamColor: "", num:2});
 
 //launch server
 var server = http.createServer(staticServer({root:ROOT_DIR}));
@@ -41,16 +21,25 @@ var socketIO = socket(server);
 
 socketIO.on('connection', function(socket)
 {
-    if(players.player1===0)
-    {
-        players.player1= socket.id;
-        console.log("Player 1: " + players.player1)
+    if(player1.name=== "" || player2.name === "") {
+
+        if (player1.name=== "") {
+            socketIO.emit('Login', {user: player1,other: player2})
+        }
+        else if(player2.name=== "")
+        {
+            socketIO.emit('Login', {user: player2, other: player1})
+        }
     }
-    else if(players.player2===0)
-    {
-        players.player2= socket.id;
-        console.log("Player 2: " + players.player2)
-    }
+
+    socket.on('player',function(data){
+
+        if(data.player.num===1){player1 = data.player}
+        else if(data.player.num===2){player2 = data.player}
+        console.log(player2.name);
+        console.log(player1.name);
+        socketIO.sockets.emit('player');
+    });
     socket.on('move',function(data){
         socketIO.sockets.emit('move',data);
     });
