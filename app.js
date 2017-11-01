@@ -54,7 +54,7 @@ socketIO.on('connection', function(socket)
     socket.on('move',function(data){
         socketIO.sockets.emit('move',data);
     });
-    socket.on('fuck',function (data) {
+    socket.on('fight',function (data) {
         if(data.red.att === 0){data.red.att = operations.attack();}
         if(data.blue.att === 0)data.blue.att = operations.attack();
         if(data.blue.hp === 0)data.blue.hp = operations.hp();
