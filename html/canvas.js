@@ -6,6 +6,9 @@ tokens.push({colour: "blue", x:850, y:250, width: 100, height: 100, player: 0, r
 var canvas = document.getElementById("canvas1");
 document.getElementById("btn").addEventListener("click", handleClick);
 
+var innerSquareTop = 0;
+var innerSquareLeft = 250;
+
 
 
 var deltaX;
@@ -59,8 +62,8 @@ var drawCanvas = function(){
 
 function handleMouseDown(event){
     var rect = canvas.getBoundingClientRect();
-    var canvasX = event.pageX - rect.left;
-    var canvasY = event.pageY - rect.top;
+    var canvasX = event.pageX - innerSquareLeft;
+    var canvasY = event.pageY - innerSquareTop;
     if(getTokenAtLocation(canvasX,canvasY).player===0)
     {
         getTokenAtLocation(canvasX,canvasY).player = socket.id;
@@ -85,17 +88,17 @@ function handleMouseDown(event){
 //event handler for when a paddle(mouse) is being dragged
 function handleMouseMove(event){
     var rect = canvas.getBoundingClientRect();
-    var canvasX = event.pageX - rect.left;
-    var canvasY = event.pageY - rect.top;
+    var canvasX = event.pageX - innerSquareLeft;
+    var canvasY = event.pageY - innerSquareTop;
 
-    tokenBeingMoved.y = canvasY + deltaY;
     tokenBeingMoved.x = canvasX + deltaX;
+    tokenBeingMoved.y = canvasY + deltaY;
 
 
     if(tokenBeingMoved.y + tokenBeingMoved.height > rect.bottom){
         tokenBeingMoved.y = rect.bottom - tokenBeingMoved.height;
     }
-    else if(tokenBeingMoved.y < rect.top){
+    if(tokenBeingMoved.y < rect.top){
         tokenBeingMoved.y = rect.top
     }
     socket.emit('move',{cX: tokenBeingMoved.x, cY: tokenBeingMoved.y, co: tokenBeingMoved.colour});
@@ -115,9 +118,9 @@ function handleMouseUp(event){
 }
 
 $(document).ready(function(){
-   $("#canvas1").mousedown(handleMouseDown);
-   drawCanvas();
-   console.log("Thing on");
+    $("#canvas1").mousedown(handleMouseDown);
+    drawCanvas();
+    console.log("Thing on");
 });
 
 function handleClick()
@@ -129,8 +132,8 @@ function handleClick()
 // listen for events
 
 socket.on('move',function(data){
-tokenBeingMoved = getTokenByColor(data.co);
-tokenBeingMoved.x = data.cX;
-tokenBeingMoved.y = data.cY;
-drawCanvas();
+    tokenBeingMoved = getTokenByColor(data.co);
+    tokenBeingMoved.x = data.cX;
+    tokenBeingMoved.y = data.cY;
+    drawCanvas();
 });
