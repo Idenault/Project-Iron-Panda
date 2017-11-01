@@ -137,3 +137,19 @@ socket.on('move',function(data){
     tokenBeingMoved.y = data.cY;
     drawCanvas();
 });
+
+socket.on('winner',function (data) {
+    alert(data.win);
+    getTokenByColor("red").att =0;
+    getTokenByColor("red").hp =0;
+    getTokenByColor("blue").hp =0;
+    getTokenByColor("blue").hp =0;
+});
+
+socket.on('continue',function (data) {
+    alert("The Battle Continues Press Fight to continue");
+    getTokenByColor("red").att =data.red.att;
+    getTokenByColor("red").hp =data.re.hp;
+    getTokenByColor("blue").hp =data.blue.att;
+    getTokenByColor("blue").hp =data.blue.hp;
+});

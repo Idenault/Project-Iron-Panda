@@ -1,10 +1,10 @@
 module.exports = {attack: function generateAttack(){
-    var randomAttack = math.floor((math.random()*10)+1);
+    var randomAttack = Math.floor((Math.random()*10)+1);
     return randomAttack;},
 
 hp: function generateHp(){
-    var randomHP = math.floor((math.random()*25)+1);
-    return randomAttack;},
+    var randomHP = Math.floor((Math.random()*25)+1);
+    return randomHP;},
 
 battle: function battle(playerObj1,playerObj2){
     var p1Att =playerObj1.att;
@@ -12,7 +12,6 @@ battle: function battle(playerObj1,playerObj2){
     var p2Att =playerObj2.att;
     var p2HP =playerObj2.hp;
     var winner = 'none';
-
 
     if((p1HP>p2Att)&&(p2HP<p1Att))
     {
