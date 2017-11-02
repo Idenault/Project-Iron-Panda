@@ -5,6 +5,9 @@ tokens.push({colour: "red", x:50, y:250, width: 100, height: 100, playerID: 0, a
 tokens.push({colour: "blue", x:850, y:250, width: 100, height: 100, playerID: 0, att: 0, hp: 0});
 var canvas = document.getElementById("canvas1");
 document.getElementById("btn").addEventListener("click", handleClick);
+document.getElementById("btn2").addEventListener("click", handleClickRed);
+document.getElementById("btn3").addEventListener("click", handleClickBlue);
+var clickedTeam =0;
 
 var innerSquareTop = 0;
 var innerSquareLeft = 250;
@@ -147,6 +150,29 @@ function handleClick()
 {
     socket.emit('fight', {blue: tokens[0], red: tokens[1]})
 }
+function handleClickRed()
+{
+    if(clickedTeam<0)
+    {
+        document.getElementById("btn2").disabled = true;
+        document.getElementById("btn2").background = "white";
+        socket.emit('disable', {btn: "btn2"})
+
+
+    }
+
+}
+function handleClickBlue()
+{
+    if(clickedTeam<0)
+    {
+        document.getElementById("btn3").disabled = true;
+        document.getElementById("btn3").background = "white";
+        socket.emit('disable', {btn: "btn3"})
+    }
+}
+
+
 
 
 // listen for events
@@ -186,6 +212,11 @@ socket.on('Login',function (data) {
 
 socket.on('player', function () {
 
+});
+socket.on('disable', function () {
+
+    document.getElementById(data.disableBtn).disabled = true;
+    document.getElementById(data.disableBtn).background = "white";
 });
 
 /*socket.on('ownership', function (data) {

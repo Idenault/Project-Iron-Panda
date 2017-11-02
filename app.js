@@ -48,7 +48,9 @@ socketIO.on('connection', function(socket)
 
     });
 */
-
+    socket.on('disable',function(data){
+        socketIO.sockets.emit('disable',{disableBtn: data.btn});
+    });
     socket.on('player',function(data){
 
         if(data.player.num===1){player1 = data.player}
