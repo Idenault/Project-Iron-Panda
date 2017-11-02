@@ -1,8 +1,8 @@
 //Establishing connection to server
 var socket = io.connect('http://localhost:3000');
 var tokens = [];
-tokens.push({colour: "red", x:50, y:250, width: 100, height: 100, playerID: 0, ready : false, att: 0, hp: 0});
-tokens.push({colour: "blue", x:850, y:250, width: 100, height: 100, playerID: 0, ready: false, att: 0, hp: 0});
+tokens.push({colour: "red", x:50, y:250, width: 100, height: 100, playerID: 0, att: 0, hp: 0});
+tokens.push({colour: "blue", x:850, y:250, width: 100, height: 100, playerID: 0, att: 0, hp: 0});
 var canvas = document.getElementById("canvas1");
 document.getElementById("btn").addEventListener("click", handleClick);
 
@@ -85,12 +85,12 @@ function handleMouseDown(event){
     var rect = canvas.getBoundingClientRect();
     var canvasX = event.pageX - innerSquareLeft;
     var canvasY = event.pageY - innerSquareTop;
-    if(getTokenAtLocation(canvasX,canvasY).player===0)
+/*    if(getTokenAtLocation(canvasX,canvasY).playerID===0)
     {
-        getTokenAtLocation(canvasX,canvasY).player = socket.id;
-        //emit Assign player team
-    }
+        socket.emit('selected', {co: getTokenAtLocation(canvasX,canvasY).colour, ID: socket.id})
+    }*/
     tokenBeingMoved = getTokenAtLocation(canvasX, canvasY);
+
 
     if(tokenBeingMoved !== null){
         deltaX = tokenBeingMoved.x - canvasX;
@@ -99,7 +99,6 @@ function handleMouseDown(event){
 
     $("#canvas1").mousemove(handleMouseMove);
     $("#canvas1").mouseup(handleMouseUp);
-
 
     event.stopPropagation();
     event.preventDefault();
@@ -188,5 +187,14 @@ socket.on('Login',function (data) {
 socket.on('player', function () {
 
 });
+
+/*socket.on('ownership', function (data) {
+
+    if(getTokenByColor(data.co).playerID===0)
+    {
+        getTokenByColor(data.co).playerID= data.ID;
+    }
+
+});*/
 
 
