@@ -7,7 +7,7 @@ var canvas = document.getElementById("canvas1");
 document.getElementById("btn").addEventListener("click", handleClick);
 document.getElementById("btn2").addEventListener("click", handleClickRed);
 document.getElementById("btn3").addEventListener("click", handleClickBlue);
-var clickedTeam =0;
+var team =0;
 
 var innerSquareTop = 0;
 var innerSquareLeft = 250;
@@ -152,23 +152,25 @@ function handleClick()
 }
 function handleClickRed()
 {
-    if(clickedTeam<0)
+    if(team ===0)
     {
         document.getElementById("btn2").disabled = true;
         document.getElementById("btn2").background = "white";
-        socket.emit('disable', {btn: "btn2"})
-
-
+        document.getElementById("btn3").disabled = true;
+        document.getElementById("btn3").background = "white";
+        team = "red";
     }
 
 }
 function handleClickBlue()
 {
-    if(clickedTeam<0)
+    if(team ===0)
     {
         document.getElementById("btn3").disabled = true;
         document.getElementById("btn3").background = "white";
-        socket.emit('disable', {btn: "btn3"})
+        document.getElementById("btn2").disabled = true;
+        document.getElementById("btn2").background = "white";
+        team = "blue";
     }
 }
 
@@ -217,6 +219,7 @@ socket.on('disable', function () {
 
     document.getElementById(data.disableBtn).disabled = true;
     document.getElementById(data.disableBtn).background = "white";
+    drawCanvas();
 });
 
 /*socket.on('ownership', function (data) {
