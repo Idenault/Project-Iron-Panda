@@ -1,57 +1,76 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>Assignment 2</title>
-        <script src="jquery-1.11.3.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
-        <style>
-            body {
-                background: #333333;
-            }
-            canvas {
-                margin: 50px 250px 50px 250px;
-            }
-            .canvas {
-                background: #222222;
-                border: thin inset #999999
-            }
-            .vl {
-                border-left: 6px solid black;
-                height: 500px;
-                position: absolute;
-                left: 750px;
-                margin-left: -3px;
-                top: 175px;
-            }
-            button
-            {
-                background-color: crimson;
-                width: 100px;
-                height: 30px;
-                position: absolute;
-                left: 700px;
-                top: 750px;
-            }
+<head>
+    <meta charset="UTF-8">
+    <title>Assignment 2</title>
+    <script src="jquery-1.11.3.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
+    <style>
+        body {
+            background: #333333;
+        }
+        canvas {
+            margin: 0px 250px 25px 250px;
+        }
+        .canvas {
+            background: #222222;
+            border: thin inset #999999
+        }
+        .vl {
+            border-left: 6px solid black;
+            height: 500px;
+            position: absolute;
+            left: 750px;
+            margin-left: -3px;
+            top: 50px;
+        }
+        .bl
+        {
+            background-color: crimson;
+            width: 100px;
+            height: 30px;
+            position: absolute;
+            left: 700px;
+            top: 700px;
+        }
+        .b2
+        {
+            background-color: crimson;
+            width: 100px;
+            height: 30px;
+            position: absolute;
+            left: 500px;
+            top: 650px;
+        }
+        .b3
+        {
+            background-color: crimson;
+            width: 100px;
+            height: 30px;
+            position: absolute;
+            left: 900px;
+            top: 650px;
+        }
+    </style>
+</head>
 
+<body>
+<!--<h1 align="center">Iron Panda Battle Arena</h1>-->
+<div class="vl"></div>
+<div class="bl"></div>
+<div class="b2"></div>
+<div class="b3"></div>
+<button id="btn" class="b1"> FIGHT!!!! </button>
+<button id="btn2" class="b2" > Team Red </button>
+<button id="btn3" class="b3"> Team Blue </button>
+</body>
 
-        </style>
-    </head>
+<canvas id="canvas1" class="canvas" width="1000" height="600">
 
-    <body>
-    <h1 align="center">Iron Panda Battle Arena</h1>
-    <div class="vl"></div>
-    <button id="btn"> FIGHT!!!! </button>
-    </body>
+</canvas>
 
-    <canvas id="canvas1" class="canvas" width="1000" height="600">
-
-    </canvas>
-
-    <script src="canvas.js">
-
-        var canvas = document.getElementById("canvas1");
-        var context = canvas.getContext('2d');
-
-  </script>
+<script src="canvas.js">
+    var canvas = document.getElementById("canvas1");
+    var context = canvas.getContext('2d');
+</script>
 </html>
