@@ -24,20 +24,37 @@ socketIO.on('connection', function(socket)
     if(player1.name=== "" || player2.name === "") {
 
         if (player1.name=== "") {
-            socketIO.emit('Login', {user: player1,other: player2})
+            socketIO.sockets.emit('Login', {user: player1,other: player2})
         }
         else if(player2.name=== "")
         {
-            socketIO.emit('Login', {user: player2, other: player1})
+            socketIO.sockets.emit('Login', {user: player2, other: player1})
         }
     }
+
+/*
+    socket.on('selected', function (data) {
+        if(data.ID = player1.name && player2.teamColor !== data.co)
+        {
+            player1.teamColor = data.co;
+            console.log("this is a test");
+            socketIO.sockets.emit('ownership', {co: data.co, ID: data.ID})
+        }
+        else if(data.ID = player2.name && player2.teamColor !== data.co)
+        {
+            player2.teamColor = data.co;
+            socketIO.sockets.emit('ownership', {co: data.co, ID: data.ID})
+        }
+
+    });
+*/
 
     socket.on('player',function(data){
 
         if(data.player.num===1){player1 = data.player}
         else if(data.player.num===2){player2 = data.player}
-        console.log(player2.name);
         console.log(player1.name);
+        console.log(player2.name);
         socketIO.sockets.emit('player');
     });
     socket.on('move',function(data){
